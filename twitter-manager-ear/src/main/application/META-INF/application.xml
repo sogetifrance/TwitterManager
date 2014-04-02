@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This is the application.xml file intended for use with gradle, if you find it in your maven project, then that's a problem most likely. -->
+<application xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/application_6.xsd" version="6">
+  <display-name>twitter-manager-ear</display-name>
+  <module>
+    <web>
+      <web-uri>twitter-manager-1.0</web-uri>
+      <context-root>twitter-manager</context-root>
+    </web>
+  </module>
+  <library-directory>lib</library-directory>
+</application>
