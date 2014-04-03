@@ -3,20 +3,51 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
-    <servlet>
-        <servlet-name>twitterManager</servlet-name>
-        <servlet-class>
-           org.sogeti.TwitterManagerServlet
-        </servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>twitterManager</servlet-name>
-        <url-pattern>/twittermanager/</url-pattern>
-    </servlet-mapping>
  
-    <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
-    </welcome-file-list>
+   <filter>
+		<filter-name>ObjectifyFilter</filter-name>
+		<filter-class>com.googlecode.objectify.ObjectifyFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>ObjectifyFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	<!-- TWITTER MANAGER -->
+	<servlet>
+		<servlet-name>TwitterManager</servlet-name>
+		<servlet-class>org.sogeti.TwitterManagerServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>TwitterManager</servlet-name>
+		<url-pattern>/twittermanager</url-pattern>
+	</servlet-mapping>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+	
+	<!-- TWEETSENDER -->
+	<servlet>
+		<servlet-name>TweetSender</servlet-name>
+		<servlet-class>org.sogeti.TweetSenderServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>TweetSender</servlet-name>
+		<url-pattern>/tweetsender</url-pattern>
+	</servlet-mapping>
+	
+	<!-- MANAGE CONFIGURATION -->
+	<servlet>
+		<servlet-name>ManageConfiguration</servlet-name>
+		<servlet-class>org.sogeti.ManageConfigurationServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ManageConfiguration</servlet-name>
+		<url-pattern>/manageconfiguration</url-pattern>
+	</servlet-mapping>
+	
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
 </web-app>
 

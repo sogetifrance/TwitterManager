@@ -1,53 +1,95 @@
-/* Copyright (c) 2011 Google Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package org.sogeti;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * Servlet provides the HTML for the counter web page.
- */
+import org.sogeti.bo.UserBean;
+import org.sogeti.service.ManageUsersService;
+import org.sogeti.service.bo.RestServiceResponse;
+
+import com.googlecode.objectify.ObjectifyService;
+
+
+@SuppressWarnings("serial")
 public class TwitterManagerServlet extends HttpServlet {
-  @Override
-  public void doGet(HttpServletRequest req, HttpServletResponse resp)
-      throws IOException {
-    resp.getWriter().println("<html>");
-    resp.getWriter().println("  <body>");
 
-    TwitterManagerService counter = new TwitterManagerService();
+	private static Logger LOGGER = Logger.getLogger(TwitterManagerServlet.class
+			.toString());
+	
 
-    resp.getWriter().println(
-        "  <p>Current count: " + counter.getCount() + "</p>");
+	static {
+		ObjectifyService.register(UserBean.class); // Fait conna�tre votre
+													// classe-entit� � Objectify
+	}
+	private ManageUsersService managerService = new ManageUsersService();
 
-    resp.getWriter().println("<form action='.' method='post'>");
-    resp.getWriter().println("  <div><input type='submit' value='+1' /></div>");
-    resp.getWriter().println("</form>");
+	public void doGet(HttpServletRequest req, HttpServletResponse resp)
+			throws IOException {
+		LOGGER.log(Level.INFO, "Entree servlet TwitterManagerServlet");
+		req.setAttribute("isRunning", isRunnningService().contains("true")?"true":"false");
+		
+		try {
+			this.getServletContext()
+					.getRequestDispatcher("/WEB-INF/jsp/twitterManager.jsp")
+					.forward(req, resp);
+		} catch (ServletException e) {
+			LOGGER.log(
+					Level.SEVERE,
+					"Un probl�me est survenu avec le traitement de la jsp '/WEB-INF/jsp/twitterManager.jsp'");
+			e.printStackTrace();
+		}
+	}
+	
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+		String isRunning = req.getParameter("isRunning");
+		String typeSubmit = req.getParameter("typeSubmit");
+		if(typeSubmit==null) {
+			isRunning=isRunnningService().contains("true")?"true":"false";
+		} else if(typeSubmit.equals("start")){
+			startService();
+		} else if(typeSubmit.equals("stop")){
+			stopService();
+		} else {
+			isRunning=isRunnningService().contains("true")?"true":"false";
+		}
+		isRunning=isRunnningService().contains("true")?"true":"false";
+		req.setAttribute("isRunning", isRunning);
+		try {
+			this.getServletContext()
+					.getRequestDispatcher("/WEB-INF/jsp/twitterManager.jsp")
+					.forward(req, resp);
+		} catch (ServletException e) {
+			LOGGER.log(
+					Level.SEVERE,
+					"Un probl�me est survenu avec le traitement de la jsp '/WEB-INF/jsp/twitterManager.jsp'");
+			e.printStackTrace();
+		}
+	}
+	
+	private String startService() {
+		RestServiceResponse reponse = managerService.startManagement();
+		return reponse.getServiceRunning();
+	}
+	
+	private String stopService() {
+		
+		RestServiceResponse reponse = managerService.stopManagement();
+		return reponse.getServiceRunning();
+	}
+	
+	private String isRunnningService() {
+		 RestServiceResponse reponse = managerService.isRunning();
+		 return reponse.getServiceRunning();
+	}
 
-    resp.getWriter().println("  </body>");
-    resp.getWriter().println("</html>");
-  }
 
-  @Override
-  public void doPost(HttpServletRequest req, HttpServletResponse resp)
-      throws IOException {
-    TwitterManagerService counter = new TwitterManagerService();
-    counter.increment();
-    doGet(req, resp);
-  }
+	
+	
 }
