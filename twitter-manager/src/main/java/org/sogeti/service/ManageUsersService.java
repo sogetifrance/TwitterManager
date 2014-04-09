@@ -8,10 +8,9 @@ import java.util.concurrent.ThreadFactory;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.sogeti.BeanMapper;
+import org.sogeti.bo.BeanMapper;
 import org.sogeti.bo.UserBean;
-import org.sogeti.service.TwitterService;
-import org.sogeti.service.bo.RestServiceResponse;
+import org.sogeti.service.bo.ServiceResponse;
 
 import twitter4j.IDs;
 import twitter4j.ResponseList;
@@ -29,8 +28,15 @@ public class ManageUsersService {
 	private Map<String, UserBean> mapFriendUserBean;
 	private List<Long> followersIdList;
 	private List<Long> friendsIdList;
+	private Twitter twitter;
 	private static Logger LOGGER = Logger.getLogger(ManageUsersService.class.toString());
 	
+	
+	public ManageUsersService(Twitter twitter) {
+		super();
+		this.twitter = twitter;
+	}
+
 	private void traitementPrincipal() {
 		LOGGER.log(Level.INFO,"Demmarrage du service ManageUsersService");
 		// on recupere les friends et followers du user API
@@ -53,10 +59,10 @@ public class ManageUsersService {
 	private void init() {
 		TwitterService.getInstance();
 		// recherche des friends du user API
-		mapFriendUserBean = TwitterService.getInstance().getFriendsUserBeanMap(
+		mapFriendUserBean = TwitterService.getInstance().getFriendsUserBeanMap(twitter,
 				TwitterService.APP_ACCOUNT_SCREENNAME);
 		// recherche des followers du user API
-		followersIdList = TwitterService.getInstance().getFollowersIDList(
+		followersIdList = TwitterService.getInstance().getFollowersIDList(twitter,
 				TwitterService.APP_ACCOUNT_SCREENNAME);
 		friendsIdList = new ArrayList<Long>();
 	}
@@ -64,7 +70,7 @@ public class ManageUsersService {
 	private void clean() {
 		// on boucle sur tous les friends et on nettoie
 		for (UserBean friend : mapFriendUserBean.values()) {
-			friendsIdList = MajManager.maj(followersIdList, friendsIdList,
+			friendsIdList = MajManager.maj(twitter, followersIdList, friendsIdList,
 					false, friend);
 		}
 	}
@@ -72,7 +78,6 @@ public class ManageUsersService {
 	//TODO faire m�thode maj
 
 	private void findNewFriends(Long userId) {
-		Twitter twitter = TwitterService.getInstance().getTwitter();
 		try {
 			// recup�ration des 5000 premiers ids
 			IDs ids = null;
@@ -106,7 +111,7 @@ public class ManageUsersService {
 					for (User user : newUserList100) {
 						// on teste si le user peut �tre ajouter ou non
 						if (friendsIdList.size() < 2000) {
-							friendsIdList = MajManager.maj(followersIdList,
+							friendsIdList = MajManager.maj(twitter, followersIdList,
 									friendsIdList, true,
 									BeanMapper.getUserBeanFromUser(user));
 						} else {
@@ -135,7 +140,7 @@ public class ManageUsersService {
 
 	}
 
-	public RestServiceResponse startManagement() {
+	public ServiceResponse startManagement() {
 		LOGGER.log(Level.INFO,"Demarrage du service ManageUsersService");
 		if (!this.isStarted) {
 			this.isStarted = true;
@@ -156,27 +161,26 @@ public class ManageUsersService {
 				this.isStarted = false;
 			}
 		}
-		return new RestServiceResponse("startManagement",
+		return new ServiceResponse("startManagement",
 				String.valueOf(this.isStarted), new ArrayList<String>());
 	}
 
-	public RestServiceResponse stopManagement() {
+	public ServiceResponse stopManagement() {
 		LOGGER.log(Level.INFO,"Demande d'arrêt du service ManageUsersService");
 		if (this.isStarted) {
 			this.stopRequired = true;
 		}
 		
-		return new RestServiceResponse("stopManagement",
+		return new ServiceResponse("stopManagement",
 				String.valueOf(this.isStarted), new ArrayList<String>());
 	}
 
-	public RestServiceResponse isRunning() {
-		return new RestServiceResponse("isRunning",
+	public ServiceResponse isRunning() {
+		return new ServiceResponse("isRunning",
 				String.valueOf(this.isStarted), new ArrayList<String>());
 	}
 
 	private void manageFriends() {
-		int count = 1;
 		Thread thread = Thread.currentThread();
 
 		synchronized (thread) {

@@ -15,7 +15,7 @@ public class ScoreService {
 	}
 	
 	/**
-	 * Calcule un score pour un friend/following en fonction de la recherche de mot clé dans la description.
+	 * Calcule un score pour un friend/following en fonction de la recherche de mot clÃ© dans la description.
 	 * @param userBean
 	 * @return
 	 */

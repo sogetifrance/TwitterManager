@@ -1,24 +1,21 @@
 package org.sogeti.service;
 
-import java.sql.Date;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.sogeti.bo.UserBean;
-import org.sogeti.service.ScoreService;
-import org.sogeti.service.TwitterService;
+
+import twitter4j.Twitter;
 
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
-import com.googlecode.objectify.Result;
 
 public class MajManager {
 	private static Logger LOGGER = Logger.getLogger(MajManager.class.toString());
 	
-	public static List<Long> maj(List<Long> followersIds, List<Long> friendIds,
+	public static List<Long> maj(Twitter twitter, List<Long> followersIds, List<Long> friendIds,
 			boolean isNew, UserBean user) {
 		// On regarde si c'est potentiellement un nouveau friend et si il n'est
 		// pas d�j� un friends du compte
@@ -63,7 +60,7 @@ public class MajManager {
 					if (!user.isDelete()) {
 						// Si non on l'ajoute au amis du compte
 						LOGGER.log(Level.INFO,"Friend ajouté : " +user.getName());
-						TwitterService.getInstance().createFriendship(
+						TwitterService.getInstance().createFriendship(twitter,
 								user.getId());
 						friendIds.add(user.getId());
 					}
@@ -72,7 +69,7 @@ public class MajManager {
 					if (user.isDelete()) {
 						LOGGER.log(Level.INFO,"Friend supprimé : " +user.getName());
 						// Si oui on suprime le friend du compte.
-						TwitterService.getInstance().destroyFriendship(
+						TwitterService.getInstance().destroyFriendship(twitter,
 								user.getId());
 					} else {
 						friendIds.add(user.getId());

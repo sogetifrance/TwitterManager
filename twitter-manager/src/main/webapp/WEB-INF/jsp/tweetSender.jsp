@@ -10,16 +10,24 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>TweetSender</title>
+<script src="../js/jquery-1.11.0.min.js" type="text/javascript" ></script>
 </head>
 
 <body>
 	<c:out
 		value="Cette page permet d'envoyer un directMessage à tous les followers du compte paramétré en indiquant 'allUsers' ou à un user unique en renseignant son screenName" />
+	
+	<c:out
+		value=""/>
 	<br />
 	<p>${erreurMessage}</p>
 	<form name="tweetSenderForm" method="post">
 
-		<table border=0>
+		<table >
+			<tr>
+				<td><label>Expediteur</label></td>
+				<td colspan="2"><c:out value="${expediteur}"/></td>
+			</tr>
 			<tr>
 				<td><label>User(s) de destination</label></td>
 				<td colspan="2"><input type="text" id=userTest name="userTest"
@@ -36,48 +44,42 @@
 			<tr>
 				<td colspan="2"><progress id="progressBar" value="0" max="0"></progress></td>
 				<td><label id="avancementString"></label></td>
+				<td><input type="button" name="refresh" class="button"
+					style="width: 200px;" value="envoyer" onclick="test()" /></td>
 			</tr>
 		</table>
 	</form>
 </body>
 <script type="text/javascript">
-	function refreshAvancement() {
-			//try to call http://localhost:8888/_ah/api/tweetSenderService/v1/isRunning	
-			// Appel de service Rest
-			var enCours = "false";
-			var request = gapi.client.tweetSenderService.tweetSenderService
-					.isRunning();
-			// Gestion Reponse
-			request.execute(function(resp) {
-				document.getElementById("progressBar").value = resp.result[0];
-				document.getElementById("progressBar").max = resp.result[1];
-				console.log(resp);
-				console.log(resp.result[0]);
-				console.log(resp.serviceRunning);
-				enCours = resp.serviceRunning;
-				document.getElementById("avancementString").innerHTML = resp.result[0]+"/"+resp.result[1];
-				
-				if(enCours=="true"){
-	 				setTimeout(refreshAvancement, 3000);
-				} else{
-					document.getElementById("avancementString").innerHTML = "Envoi de message terminé";
-				}
-			});
-			
-			
-	}
+
+function refreshAvancement() {
+	//try to call http://localhost:8888/_ah/api/tweetSenderService/v1/isRunning	
+	// Appel de service Rest
+	var enCours = "false";
 	
-	function test2() {
-		console.log('tweetSender api ready');
-		refreshAvancement();
-	}
+	$.get('tweetsender',{action:"refresh"},function(resp) {
+		console.log(resp);
+		console.log(resp.result);
+		console.log(resp.serviceRunning);
+        document.getElementById("progressBar").value = resp.result[0];
+		document.getElementById("progressBar").max = resp.result[1];
+		
+		enCours = resp.serviceRunning;
+		document.getElementById("avancementString").innerHTML = resp.result[0]+"/"+resp.result[1];
+		
+		if(enCours=="true"){
+				setTimeout(refreshAvancement, 3000);
+		} else{
+			document.getElementById("avancementString").innerHTML = "Envoi de message terminé";
+		}
+    });
+}
+
+$(document).ready(function() {
+	refreshAvancement();
+});	
 	
-	function init() {
-		var ROOT = "http://localhost:8888/_ah/api";
-		gapi.client.load('tweetSenderService', 'v1', function() {
-			test2();
-		}, ROOT);
-	}
+	
+	
 </script>
-<script src="https://apis.google.com/js/client.js?onload=init"></script>
 </html>

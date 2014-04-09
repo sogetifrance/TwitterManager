@@ -18,16 +18,11 @@
 	<br />
 	<p>${erreurMessage}</p>
 	<form name="configurationForm" method="post">
-criterian1=Tomcat ,Glassfish ,JBoss ,Weblogic ,Websphere, TomEE, PHP, Groovy, Ruby, Python, Scala, Open Source, HTML, JavaScript
-#Liste de criteres avec condition, conditions séparées par "#" , listes de mots séparées par des ";" et  mots sparés par ",", la fin de ligne ce termine sans rien
-#exemple: Software; Developer, Architect, Engineer# Java, J2EE; Spring, Struts, JSF, JSP
-criterian1conditions=
-criterian2=JDBC, REST, SQL, Programmer, MDE, MDD, MDA, Model-Driven, MyBatis, JavaFX, GWT 
-criterian2conditions=Software; Developer, Architect, Engineer
-criterian3=Java, JavaEE, J2EE, JEE, Hibernate, JPA, Spring, Struts, Wicket, JSF, JSP, Eclipse
-criterian3conditions=
-scoreOk=3
-		<table border=0>
+		<table>
+			<tr>
+				<td><label>Utilisateur connecté</label></td>
+				<td colspan="2"><c:out value="${mainUser}"/></td>
+			</tr>
 			<tr>
 				<td><label>Oauth Consumer Key</label></td>
 				<td colspan="2"><input type="text" id="oauthConsumerKey" name="oauthConsumerKey"

@@ -109,7 +109,13 @@
 				<artifactId>appengine-maven-plugin</artifactId>
 				<version>${appengine.target.version}</version>
 				<configuration>
-					<enableJarClasses>true</enableJarClasses>
+					<jvmFlags>
+						<jvmFlag>-Xdebug</jvmFlag>
+						<jvmFlag>-Xrunjdwp:transport=dt_socket,address=1044,server=y,suspend=y
+						</jvmFlag>
+					</jvmFlags>
+					<disableUpdateCheck>true</disableUpdateCheck>
+<!-- 					<enableJarClasses>true</enableJarClasses> -->
 				</configuration>
 				<executions>
 					<execution>
@@ -119,7 +125,6 @@
 						</goals>
 					</execution>
 				</executions>
-
 			</plugin>
 		</plugins>
 	</build>

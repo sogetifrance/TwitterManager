@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadFactory;
 
-import org.sogeti.service.bo.RestServiceResponse;
+import org.sogeti.service.bo.ServiceResponse;
+
+import twitter4j.Twitter;
 
 import com.google.appengine.api.ThreadManager;
 
@@ -14,9 +16,16 @@ public class TweetSenderService {
 	private boolean serviceRunning;
 	private int nbFollowersTotal;
 	private int nbSent;
+	private Twitter twitter;
 
+	
 
-	public RestServiceResponse sendMessage(String message) {
+	public TweetSenderService(Twitter twitter) {
+		super();
+		this.twitter = twitter;
+	}
+
+	public ServiceResponse sendMessage(String message) {
 		if (!serviceRunning) {
 			final String messageToSend = message;
 			nbFollowersTotal=0;
@@ -38,22 +47,21 @@ public class TweetSenderService {
 				e.printStackTrace();
 			}
 		} else {
-			return new RestServiceResponse("sendMessage", String.valueOf(this.serviceRunning),
+			return new ServiceResponse("sendMessage", String.valueOf(this.serviceRunning),
 					new ArrayList<String>());
 		}
-		return new RestServiceResponse("sendMessage", String.valueOf(this.serviceRunning),
+		return new ServiceResponse("sendMessage", String.valueOf(this.serviceRunning),
 				new ArrayList<String>());
 	}
 
 	private void sendDirecMessage(String message) {
 
-		List<Long> listIds = TwitterService.getInstance().getFollowersIDList(
+		List<Long> listIds = TwitterService.getInstance().getFollowersIDList(twitter,
 				TwitterService.APP_ACCOUNT_SCREENNAME);
 		this.nbFollowersTotal = listIds.size();
 		for (Long id : listIds) {
-			// try {
 			try {
-				Thread.currentThread().sleep(500);
+				Thread.sleep(500);
 				this.nbSent++;
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
@@ -63,11 +71,11 @@ public class TweetSenderService {
 		this.serviceRunning = false;
 	}
 
-	public RestServiceResponse isRunning() {
+	public ServiceResponse isRunning() {
 		List<String> result = new ArrayList<String>();
 		result.add(String.valueOf(this.nbSent));
 		result.add(String.valueOf(this.nbFollowersTotal));
-		RestServiceResponse rsr = new RestServiceResponse("sendMessage", String.valueOf(this.serviceRunning),
+		ServiceResponse rsr = new ServiceResponse("sendMessage", String.valueOf(this.serviceRunning),
 				result);
 		return rsr;
 	}

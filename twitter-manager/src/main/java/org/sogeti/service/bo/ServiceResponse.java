@@ -2,14 +2,13 @@ package org.sogeti.service.bo;
 
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlRootElement;
 
-public class RestServiceResponse {
+public class ServiceResponse {
 	private String nomService;
 	private String serviceRunning;
 	private List<String>  result;
 
-    public RestServiceResponse(String nomService, String serviceRunning, List<String> result) {
+    public ServiceResponse(String nomService, String serviceRunning, List<String> result) {
         this.nomService = nomService;
         this.serviceRunning = serviceRunning;
         this.result = result;

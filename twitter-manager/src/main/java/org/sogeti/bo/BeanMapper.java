@@ -1,9 +1,8 @@
-package org.sogeti;
+package org.sogeti.bo;
 
 import java.lang.reflect.InvocationTargetException;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.sogeti.bo.UserBean;
 
 import twitter4j.User;
 
