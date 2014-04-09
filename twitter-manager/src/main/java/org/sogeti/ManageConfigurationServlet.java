@@ -10,11 +10,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.sogeti.bo.ParamBean;
 import org.sogeti.service.TwitterService;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 
+import com.googlecode.objectify.Objectify;
+import com.googlecode.objectify.ObjectifyService;
 
 @SuppressWarnings("serial")
 public class ManageConfigurationServlet extends HttpServlet {
@@ -22,6 +25,10 @@ public class ManageConfigurationServlet extends HttpServlet {
 	private static Logger LOGGER = Logger
 			.getLogger(ManageConfigurationServlet.class.toString());
 
+	static {
+		ObjectifyService.register(ParamBean.class); // Fait connaître votre
+													// classe-entité à Objectify
+	}
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 		LOGGER.log(Level.INFO, "Entree servlet ManageConfigurationServlet");
@@ -35,8 +42,15 @@ public class ManageConfigurationServlet extends HttpServlet {
 				Twitter twitter = (Twitter)session.getAttribute("twitter");
 				LOGGER.log(Level.INFO, "User = "+ twitter.getScreenName());
 				req.setAttribute("mainUser", twitter.getScreenName());
-					this.getServletContext()
-					.getRequestDispatcher("/WEB-INF/jsp/manageConfiguration.jsp")
+			Objectify ofy = ObjectifyService.ofy();
+			ParamBean config = ofy.load().type(ParamBean.class).id(1).now();
+			if (config == null) {
+				config = new ParamBean();
+			}
+			req.setAttribute("config", config);
+			this.getServletContext()
+					.getRequestDispatcher(
+							"/WEB-INF/jsp/manageConfiguration.jsp")
 					.forward(req, resp);
 			}
 			
@@ -55,7 +69,25 @@ public class ManageConfigurationServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		// TODO
+		Objectify ofy = ObjectifyService.ofy();
+		ParamBean config = new ParamBean();
+		config.setScreenname(req.getParameter("screenname"));
+		config.setConsumerKey(req.getParameter("oauthConsumerKey"));
+		config.setConsumerSecret(req.getParameter("oauthConsumerSecret"));
+		config.setAccesToken(req.getParameter("oauthAccesToken"));
+		config.setTokenSecret(req.getParameter("oauthAccesTokenSecret"));
+		config.setCriterian1(req.getParameter("criterian1").toLowerCase());
+		config.setCriterian1conditions(req.getParameter("criterian1conditions")
+				.toLowerCase());
+		config.setCriterian2(req.getParameter("criterian2").toLowerCase());
+		config.setCriterian2conditions(req.getParameter("criterian2conditions")
+				.toLowerCase());
+		config.setCriterian3(req.getParameter("criterian3").toLowerCase());
+		config.setCriterian3conditions(req.getParameter("criterian3conditions")
+				.toLowerCase());
+		config.setScoreOk(req.getParameter("scoreOk"));
+		ofy.save().entities(config);
+		TwitterService.PROP = config;
 		try {
 			this.getServletContext()
 					.getRequestDispatcher(
@@ -64,8 +96,9 @@ public class ManageConfigurationServlet extends HttpServlet {
 		} catch (ServletException e) {
 			LOGGER.log(
 					Level.SEVERE,
-					"Un probl�me est survenu avec le traitement de la jsp '/WEB-INF/jsp/manageConfiguration.jsp'");
+					"Un problème est survenu avec le traitement de la jsp '/WEB-INF/jsp/manageConfiguration.jsp'");
 			e.printStackTrace();
 		}
 	}
+
 }

@@ -83,12 +83,14 @@ public class TweetSenderServlet extends HttpServlet {
 			req.setAttribute("userTest", userTest);
 		} else if (message.isEmpty()) {
 			req.setAttribute("erreurMessage",
-					"Le message a envoyé ne peut pas être vide");
+					"Le message à envoyer ne peut pas être vide");
 			req.setAttribute("message", message);
 			req.setAttribute("userTest", userTest);
 		} else if (userTest.equals("allUsers")) {
 			// envoi du message a tous les followers
 			// appel e service rest
+			LOGGER.log(Level.SEVERE,
+					"envoi du message a tous les followers");
 			callSendDirectMessage(message);
 		} else {
 			// envoi du message à un userUnique
@@ -123,6 +125,7 @@ public class TweetSenderServlet extends HttpServlet {
 	}
 
 	private String callSendDirectMessage(String message) {
+		
 		ServiceResponse response = tweetSenderService.sendMessage(message);
 		return response.getServiceRunning();
 	}

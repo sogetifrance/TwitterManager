@@ -18,10 +18,10 @@ public class MajManager {
 	public static List<Long> maj(Twitter twitter, List<Long> followersIds, List<Long> friendIds,
 			boolean isNew, UserBean user) {
 		// On regarde si c'est potentiellement un nouveau friend et si il n'est
-		// pas d�j� un friends du compte
+		// pas déjà un friends du compte
 		if (!user.getScreenName().equals(TwitterService.APP_ACCOUNT_SCREENNAME)) {
 			if (!isNew || (isNew && !isFriend(friendIds, user.getId()))) {
-				// On regarde si le user n'est pas d�j� un des follower du
+				// On regarde si le user n'est pas déjà un des follower du
 				// compte.
 				if (isfollower(followersIds, user.getId())) {
 					// Si oui on passe le user en delete
@@ -33,7 +33,7 @@ public class MajManager {
 						user.setDelete(true);
 					}
 				}
-				// On regarde si le user existe d�j� dans la base
+				// On regarde si le user existe déjà dans la base
 				Objectify ofy = ObjectifyService.ofy();
 				UserBean userBdd = ofy.load().type(UserBean.class)
 						.id(user.getId()).now();
@@ -59,15 +59,16 @@ public class MajManager {
 					// Si oui On regarde si c'est un user delete
 					if (!user.isDelete()) {
 						// Si non on l'ajoute au amis du compte
+
 						LOGGER.log(Level.INFO,"Friend ajouté : " +user.getName());
 						TwitterService.getInstance().createFriendship(twitter,
+
 								user.getId());
 						friendIds.add(user.getId());
 					}
 				} else {
 					// Si non on regarde si c'est un user delete
 					if (user.isDelete()) {
-						LOGGER.log(Level.INFO,"Friend supprimé : " +user.getName());
 						// Si oui on suprime le friend du compte.
 						TwitterService.getInstance().destroyFriendship(twitter,
 								user.getId());
@@ -81,7 +82,7 @@ public class MajManager {
 		return friendIds;
 	}
 
-	// Permet de regarder si le user est d�j� friend
+	// Permet de regarder si le user est déjà friend
 	private static boolean isFriend(List<Long> userFriendIds, Long id) {
 		if (userFriendIds.contains(id)) {
 			return true;
@@ -90,7 +91,7 @@ public class MajManager {
 		}
 	}
 
-	// Permet de regarder si le user est d�j� follower
+	// Permet de regarder si le user est déjà follower
 	private static boolean isfollower(List<Long> followersIds, Long id) {
 		if (followersIds.contains(id)) {
 			return true;
@@ -108,7 +109,7 @@ public class MajManager {
 		ofy.save().entities(user);
 	}
 
-	// Permet de calculer le score d'un user par rapport � sa description
+	// Permet de calculer le score d'un user par rapport à sa description
 	private static boolean getScoreOk(String description) {
 		return ScoreService.isScoreOk(description);
 	}

@@ -62,8 +62,7 @@ public class ManageUsersService {
 		mapFriendUserBean = TwitterService.getInstance().getFriendsUserBeanMap(twitter,
 				TwitterService.APP_ACCOUNT_SCREENNAME);
 		// recherche des followers du user API
-		followersIdList = TwitterService.getInstance().getFollowersIDList(twitter,
-				TwitterService.APP_ACCOUNT_SCREENNAME);
+		followersIdList = TwitterService.getInstance().getFollowersIDList(twitter);
 		friendsIdList = new ArrayList<Long>();
 	}
 

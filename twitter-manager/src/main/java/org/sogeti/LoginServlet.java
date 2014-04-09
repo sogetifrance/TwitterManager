@@ -34,9 +34,12 @@ public class LoginServlet extends HttpServlet {
 			
 			if(req.getParameter("oauth_verifier")!=null) {
 				//log depuis twitter avec verifier envoyé par twitter
+				LOGGER.log(Level.INFO, "oauth_verifier found! "+  req.getParameter("oauth_verifier"));
 				String verifier = req.getParameter("oauth_verifier");
 				HttpSession session = req.getSession();
 				Twitter twitter = (Twitter)session.getAttribute("twitter");
+				LOGGER.log(Level.INFO, "attributs session! "+  session.getAttributeNames());
+				
 				RequestToken requestToken = new RequestToken(
 						(String) session.getAttribute("token"),
 						(String) session.getAttribute("tokenSecret"));
@@ -67,7 +70,10 @@ public class LoginServlet extends HttpServlet {
 					Configuration conf = TwitterService.getInstance().getConf();
 					TwitterFactory tf = new TwitterFactory(conf);
 					Twitter twitter = tf.getInstance();
-					RequestToken requestToken = twitter.getOAuthRequestToken("http://sogeti-twitter-manager.appspot.com/login/enterPin");
+					//pour google
+					//RequestToken requestToken = twitter.getOAuthRequestToken("http://sogeti-twitter-manager.appspot.com/login/enterPin");
+					//pour dev
+					RequestToken requestToken = twitter.getOAuthRequestToken("http://127.0.0.1:8080/login/enterPin");
 					String token = requestToken.getToken();
 					String tokenSecret = requestToken.getTokenSecret();
 					
