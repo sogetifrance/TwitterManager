@@ -47,7 +47,6 @@ public class TwitterManagerServlet extends HttpServlet {
 				Objectify ofy = ObjectifyService.ofy();
 				ParamBean config = null;
 				try {
-					LOGGER.log(Level.SEVERE,"salut c'est " + twitter.getScreenName());
 					config = ofy.load().type(ParamBean.class)
 							.id(twitter.getScreenName()).now();
 				} catch (IllegalStateException e) {
@@ -59,7 +58,6 @@ public class TwitterManagerServlet extends HttpServlet {
 							"Un problème est survenu lors du chargement des données de la base");
 					e.printStackTrace();
 				}
-				LOGGER.log(Level.SEVERE,"salut c'est " + config.getCriterian1());
 				if (config != null) {
 
 					if (this.managerService == null) {
