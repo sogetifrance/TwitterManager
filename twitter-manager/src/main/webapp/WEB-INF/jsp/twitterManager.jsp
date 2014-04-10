@@ -1,6 +1,6 @@
 <%@page import="org.sogeti.bo.UserBean"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ page import="com.google.appengine.api.datastore.*"%>
 <%@ page import="java.util.List"%>
 <%@ page import="org.sogeti.bo.UserBean"%>
@@ -29,20 +29,21 @@
 						<li ><a href="/tweetsender">TweetSender</a></li>
 						<li class="active"><a href="/twittermanager">TwitterManager</a></li>
 						<li><a href="/manageconfiguration">Configuration</a></li>
+						<li><a href="/logout">Logout</a></li>
 					</ul>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<div class="container">
+	<div class="container" style="margin-top:60px">
 		<p>
 
 			<c:out
-				value="Cet écran permet de lancer le service qui entretient la liste d'amis twitter en fonction des paramètres renseignés dans l'écran de configuration" />
+				value="Cet Ã©cran permet de lancer le service qui entretient la liste d'amis twitter en fonction des paramÃ¨tres renseignÃ©s dans l'Ã©cran de configuration" />
 		</p>
 		<c:choose>
-			<c:when test="${isRunning=='true'}">le service est lancé </c:when>
+			<c:when test="${isRunning=='true'}">le service est lancÃ© </c:when>
 			<c:when test="${isRunning=='false'}">le service est eteint </c:when>
 			<c:when test="${isRunning=='erreur'}">le service est en erreur </c:when>
 		</c:choose>

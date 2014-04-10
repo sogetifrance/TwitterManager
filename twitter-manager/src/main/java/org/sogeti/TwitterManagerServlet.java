@@ -137,6 +137,7 @@ public class TwitterManagerServlet extends HttpServlet {
 	}
 
 	private String isRunnningService() {
+		
 		ServiceResponse reponse = managerService.isRunning();
 		return reponse.getServiceRunning();
 	}
