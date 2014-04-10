@@ -1,12 +1,19 @@
 package org.sogeti.service;
 
+import org.sogeti.bo.ParamBean;
+
+import com.googlecode.objectify.Objectify;
+import com.googlecode.objectify.ObjectifyService;
+
 
 public class ScoreService {
 	
+	private static ParamBean param;
 	
-	public static boolean isScoreOk(String description){
-		
-		long scoreOk = Integer.parseInt(TwitterService.PROP.getScoreOk());
+	public static boolean isScoreOk(String description, String screenName){
+		Objectify ofy = ObjectifyService.ofy();
+		param = ofy.load().type(ParamBean.class).id(screenName).now();
+		long scoreOk = Integer.parseInt(param.getScoreOk());
 		if(getScore(description) >= scoreOk){
 			return true;
 		}
@@ -24,18 +31,18 @@ public class ScoreService {
 		long score = 0;
 		description = description.toLowerCase();
 		//Calcul du score sur mots de niveau 1
-		score = rechercehMotsCle(1, score, TwitterService.PROP.getCriterian1(), TwitterService.PROP.getCriterian1conditions(), description);
+		score = rechercheMotsCle(1, score, param.getCriterian1(), param.getCriterian1conditions(), description);
 		
 		//Calcul du score sur mots de niveau 2
-		score = rechercehMotsCle(2, score, TwitterService.PROP.getCriterian2(), TwitterService.PROP.getCriterian2conditions(), description);
+		score = rechercheMotsCle(2, score, param.getCriterian2(), param.getCriterian2conditions(), description);
 				
 		//Calcul du score sur mots de niveau 3
-		score = rechercehMotsCle(3, score, TwitterService.PROP.getCriterian3(), TwitterService.PROP.getCriterian3conditions(), description);
+		score = rechercheMotsCle(3, score, param.getCriterian3(), param.getCriterian3conditions(), description);
 		
 		return score;
 	}
 	
-	private static long rechercehMotsCle(int poids, long score, String criteres, String criteresCondition, String description){
+	private static long rechercheMotsCle(int poids, long score, String criteres, String criteresCondition, String description){
 		String[] tokens = criteres.split(",");
 		int tokensFound = 0;
 		for (String token : tokens) {

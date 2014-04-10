@@ -37,7 +37,7 @@ public class ManageUsersService {
 		this.twitter = twitter;
 	}
 
-	private void traitementPrincipal() {
+	private void traitementPrincipal() throws IllegalStateException, TwitterException {
 		LOGGER.log(Level.INFO,"Demmarrage du service ManageUsersService");
 		// on recupere les friends et followers du user API
 		init();
@@ -56,17 +56,17 @@ public class ManageUsersService {
 		LOGGER.log(Level.INFO,"Arrêt du service ManageUsersService");
 	}
 
-	private void init() {
+	private void init() throws IllegalStateException, TwitterException {
 		TwitterService.getInstance();
 		// recherche des friends du user API
 		mapFriendUserBean = TwitterService.getInstance().getFriendsUserBeanMap(twitter,
-				TwitterService.APP_ACCOUNT_SCREENNAME);
+				twitter.getScreenName());
 		// recherche des followers du user API
 		followersIdList = TwitterService.getInstance().getFollowersIDList(twitter);
 		friendsIdList = new ArrayList<Long>();
 	}
 
-	private void clean() {
+	private void clean() throws IllegalStateException, TwitterException {
 		// on boucle sur tous les friends et on nettoie
 		for (UserBean friend : mapFriendUserBean.values()) {
 			friendsIdList = MajManager.maj(twitter, followersIdList, friendsIdList,

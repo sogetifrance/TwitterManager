@@ -10,12 +10,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.sogeti.bo.ParamBean;
 import org.sogeti.bo.UserBean;
 import org.sogeti.service.ManageUsersService;
 import org.sogeti.service.bo.ServiceResponse;
 
 import twitter4j.Twitter;
+import twitter4j.TwitterException;
 
+import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 
 @SuppressWarnings("serial")
@@ -40,27 +43,54 @@ public class TwitterManagerServlet extends HttpServlet {
 				System.out.println("User indéfini redirection vers login");
 				resp.sendRedirect("/login");
 			} else {
-				Twitter twitter = (Twitter)session.getAttribute("twitter");
-				if(this.managerService==null){
-					this.managerService = new ManageUsersService(twitter);
+				Twitter twitter = (Twitter) session.getAttribute("twitter");
+				Objectify ofy = ObjectifyService.ofy();
+				ParamBean config = null;
+				try {
+					LOGGER.log(Level.SEVERE,"salut c'est " + twitter.getScreenName());
+					config = ofy.load().type(ParamBean.class)
+							.id(twitter.getScreenName()).now();
+				} catch (IllegalStateException e) {
+					LOGGER.log(Level.SEVERE,
+							"Un problème est survenu lors du chargement des données de la base");
+					e.printStackTrace();
+				} catch (TwitterException e) {
+					LOGGER.log(Level.SEVERE,
+							"Un problème est survenu lors du chargement des données de la base");
+					e.printStackTrace();
 				}
-				req.setAttribute("isRunning",
-						isRunnningService().contains("true") ? "true" : "false");
-				if (req.getPathInfo() != null
-						&& req.getPathInfo().contains("cron")) {
-					if (req.getPathInfo().contains("start")) {
-						LOGGER.log(Level.INFO,
-								"Lancement de la tache cron 'start'");
-						startService();
-					} else {
-						LOGGER.log(Level.INFO, "Tache cron demandée inconnue");
+				LOGGER.log(Level.SEVERE,"salut c'est " + config.getCriterian1());
+				if (config != null) {
+
+					if (this.managerService == null) {
+						this.managerService = new ManageUsersService(twitter);
 					}
-				} else {
-					this.getServletContext()
-							.getRequestDispatcher(
-									"/WEB-INF/jsp/twitterManager.jsp")
-							.forward(req, resp);
+					req.setAttribute("isRunning",
+							isRunnningService().contains("true") ? "true"
+									: "false");
+					if (req.getPathInfo() != null
+							&& req.getPathInfo().contains("cron")) {
+						if (req.getPathInfo().contains("start")) {
+							LOGGER.log(Level.INFO,
+									"Lancement de la tache cron 'start'");
+							startService();
+						} else {
+							LOGGER.log(Level.INFO,
+									"Tache cron demandée inconnue");
+						}
+					} else {
+						this.getServletContext()
+								.getRequestDispatcher(
+										"/WEB-INF/jsp/twitterManager.jsp")
+								.forward(req, resp);
+					}
 				}
+				else{
+					this.getServletContext()
+					.getRequestDispatcher(
+							"/WEB-INF/jsp/manageConfiguration.jsp")
+					.forward(req, resp);
+				}					
 			}
 		} catch (ServletException e) {
 			LOGGER.log(

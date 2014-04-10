@@ -112,8 +112,22 @@ public class TweetSenderServlet extends HttpServlet {
 				req.setAttribute("userTest", userTest);
 			}
 		}
-		req.setAttribute("accountScreenName",
-				TwitterService.APP_ACCOUNT_SCREENNAME);
+		try {
+			req.setAttribute("accountScreenName",
+					twitter.getScreenName());
+		} catch (IllegalStateException e1) {
+			LOGGER.log(
+					Level.SEVERE,
+					"Un problème est survenu avec le traitement de la jsp '/WEB-INF/jsp/twitterManager.jsp'");
+			e1.printStackTrace();
+			e1.printStackTrace();
+		} catch (TwitterException e1) {
+			LOGGER.log(
+					Level.SEVERE,
+					"Un problème est survenu avec le traitement de la jsp '/WEB-INF/jsp/twitterManager.jsp'");
+			e1.printStackTrace();
+			e1.printStackTrace();
+		}
 		try {
 			this.getServletContext()
 					.getRequestDispatcher("/WEB-INF/jsp/tweetSender.jsp")

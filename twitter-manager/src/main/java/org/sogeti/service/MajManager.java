@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import org.sogeti.bo.UserBean;
 
 import twitter4j.Twitter;
+import twitter4j.TwitterException;
 
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
@@ -16,10 +17,10 @@ public class MajManager {
 	private static Logger LOGGER = Logger.getLogger(MajManager.class.toString());
 	
 	public static List<Long> maj(Twitter twitter, List<Long> followersIds, List<Long> friendIds,
-			boolean isNew, UserBean user) {
+			boolean isNew, UserBean user) throws IllegalStateException, TwitterException {
 		// On regarde si c'est potentiellement un nouveau friend et si il n'est
 		// pas déjà un friends du compte
-		if (!user.getScreenName().equals(TwitterService.APP_ACCOUNT_SCREENNAME)) {
+		if (!user.getScreenName().equals(twitter.getScreenName())) {
 			if (!isNew || (isNew && !isFriend(friendIds, user.getId()))) {
 				// On regarde si le user n'est pas déjà un des follower du
 				// compte.
@@ -28,7 +29,7 @@ public class MajManager {
 					user.setDelete(true);
 				} else {
 					// On regarde si son score est bon
-					if (!getScoreOk(user.getDescription())) {
+					if (!getScoreOk(user.getDescription(), twitter.getScreenName())) {
 						// Si non on passe le user en delete
 						user.setDelete(true);
 					}
@@ -110,7 +111,7 @@ public class MajManager {
 	}
 
 	// Permet de calculer le score d'un user par rapport à sa description
-	private static boolean getScoreOk(String description) {
-		return ScoreService.isScoreOk(description);
+	private static boolean getScoreOk(String description, String screenName) {
+		return ScoreService.isScoreOk(description, screenName);
 	}
 }

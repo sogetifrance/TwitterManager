@@ -42,43 +42,12 @@
 		<form name="configurationForm" method="post">
 			<table border=0>
 				<tr>
+					<td colspan="2"><input type="hidden" id="screenname"
+						name="screenname" placeholder="User name" value="${mainUser}" /></td>
+				</tr>
+				<tr>
 					<td><label>Utilisateur connecté</label></td>
 					<td colspan="2"><c:out value="${mainUser}" /></td>
-				</tr>
-				<tr>
-					<td><label>User name</label></td>
-					<td colspan="2"><input type="text" id="screenname"
-						name="screenname" placeholder="User name" required
-						value="${config.screenname
-					}" /></td>
-				</tr>
-				<tr>
-					<td><label>Oauth Consumer Key</label></td>
-					<td colspan="2"><input type="text" id="oauthConsumerKey"
-						name="oauthConsumerKey" value="${config.consumerKey
-					}"
-						placeholder="Api key" required /></td>
-				</tr>
-				<tr>
-					<td><label>Oauth Consumer Secret</label></td>
-					<td colspan="2"><input type="password"
-						id="oauthConsumerSecret" name="oauthConsumerSecret"
-						value="${config.consumerSecret
-					}"
-						placeholder="API key secret" required /></td>
-				</tr>
-				<tr>
-					<td><label>oauth Acces Token</label></td>
-					<td colspan="2"><input type="text" id="oauthAccesToken"
-						name="oauthAccesToken" value="${config.accesToken
-					}"
-						placeholder="Access Token" required /></td>
-				</tr>
-				<tr>
-					<td><label>oauth Acces Token Secret</label></td>
-					<td colspan="2"><input type="password"
-						id="oauthAccesTokenSecret" name="oauthAccesTokenSecret" required
-						value="${config.tokenSecret }" placeholder="Access Token secret" /></td>
 				</tr>
 				<tr>
 					<td><label>criteres niveau 1</label></td>

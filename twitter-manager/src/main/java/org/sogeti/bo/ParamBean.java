@@ -11,12 +11,7 @@ public class ParamBean {
 
 	// Ojet de parametrage
 	@Id
-	private Long id;
 	private String screenname;
-	private String consumerKey;
-	private String consumerSecret;
-	private String accesToken;
-	private String tokenSecret;
 	private String criterian1;
 	private String criterian1conditions;
 	private String criterian2;
@@ -29,52 +24,12 @@ public class ParamBean {
 		super();
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	public String getScreenname() {
 		return screenname;
 	}
 
 	public void setScreenname(String screenname) {
 		this.screenname = screenname;
-	}
-
-	public String getConsumerKey() {
-		return consumerKey;
-	}
-
-	public void setConsumerKey(String consumerKey) {
-		this.consumerKey = consumerKey;
-	}
-
-	public String getConsumerSecret() {
-		return consumerSecret;
-	}
-
-	public void setConsumerSecret(String consumerSecret) {
-		this.consumerSecret = consumerSecret;
-	}
-
-	public String getAccesToken() {
-		return accesToken;
-	}
-
-	public void setAccesToken(String accesToken) {
-		this.accesToken = accesToken;
-	}
-
-	public String getTokenSecret() {
-		return tokenSecret;
-	}
-
-	public void setTokenSecret(String tokenSecret) {
-		this.tokenSecret = tokenSecret;
 	}
 
 	public String getCriterian1() {

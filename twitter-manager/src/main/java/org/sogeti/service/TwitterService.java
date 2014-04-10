@@ -1,7 +1,6 @@
 package org.sogeti.service;
 
 import java.io.IOException; 
-
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,11 +10,14 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.sogeti.bo.BeanMapper;
 import org.sogeti.bo.ParamBean;
 import org.sogeti.bo.UserBean;
+
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
+
 import twitter4j.IDs;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -26,12 +28,8 @@ import twitter4j.conf.ConfigurationBuilder;
 public class TwitterService {
 	
 	private static Logger LOGGER = Logger.getLogger(TwitterService.class.toString());
-	public static ParamBean PROP;
 	public static Properties consumerProperties;
 	private Configuration conf;
-
-	public static String APP_ACCOUNT_SCREENNAME;//TODO a supprimer
-
 
 	public Configuration getConf() {
 		return conf;
@@ -55,8 +53,6 @@ public class TwitterService {
 	private void init() {
 		LOGGER.log(Level.INFO, "Initialisation du service TwitterService");
 		ConfigurationBuilder cb = new ConfigurationBuilder();
-		Objectify ofy = ObjectifyService.ofy();
-		PROP = ofy.load().type(ParamBean.class).id(1).now();
 		consumerProperties = this.load("tweetbot.properties");
 		cb.setPrettyDebugEnabled(true);
 		cb.setOAuthConsumerKey(consumerProperties.getProperty("oauth.consumer.key"));// API key
@@ -99,13 +95,15 @@ public class TwitterService {
 	 *            (si non renseigné le user
 	 *            TwitterService.APP_ACCOUNT_SCREENNAME est utilisé.
 	 * @return
+	 * @throws TwitterException 
+	 * @throws IllegalStateException 
 	 */
-	public List<User> getFollowersList(Twitter twitter, String screenName) {
+	public List<User> getFollowersList(Twitter twitter, String screenName) throws IllegalStateException, TwitterException {
 		IDs result = null;
 		ArrayList<User> usersList = new ArrayList<User>();
 
 		if (screenName == null) {
-			screenName = TwitterService.APP_ACCOUNT_SCREENNAME;
+			screenName = twitter.getScreenName();
 		}
 		LOGGER.log(Level.INFO, "Chargement des followers du user : "
 				+ screenName);
@@ -140,8 +138,10 @@ public class TwitterService {
 	 *            (si non renseigné le user
 	 *            TwitterService.APP_ACCOUNT_SCREENNAME est utilisé.
 	 * @return
+	 * @throws TwitterException 
+	 * @throws IllegalStateException 
 	 */
-	public List<UserBean> getFollowersUserBean(Twitter twitter, String screenName){
+	public List<UserBean> getFollowersUserBean(Twitter twitter, String screenName) throws IllegalStateException, TwitterException{
 		List<UserBean> userBeanList = new ArrayList<UserBean>();
 		List<User> usersList = this.getFollowersList(twitter,screenName);
 		if(!usersList.isEmpty()){
@@ -193,15 +193,17 @@ public class TwitterService {
 	 *            (si non renseigné le user
 	 *            TwitterService.APP_ACCOUNT_SCREENNAME est utilisé.
 	 * @return liste des friends
+	 * @throws TwitterException 
+	 * @throws IllegalStateException 
 	 */
-	public List<User> getFriendsList(Twitter twitter, String screenName) {
+	public List<User> getFriendsList(Twitter twitter, String screenName) throws IllegalStateException, TwitterException {
 		LOGGER.log(Level.INFO,"Chargement des friends du user : "+ screenName);
 
 		IDs result = null;
 		ArrayList<User> usersList = new ArrayList<User>();
 
 		if (screenName == null) {
-			screenName = TwitterService.APP_ACCOUNT_SCREENNAME;
+			screenName = twitter.getScreenName();
 		}
 
 		long cursor = -1;
@@ -235,8 +237,10 @@ public class TwitterService {
 	 *            (si non renseigné le user
 	 *            TwitterService.APP_ACCOUNT_SCREENNAME est utilisé.
 	 * @return
+	 * @throws TwitterException 
+	 * @throws IllegalStateException 
 	 */
-	public Map<String,UserBean> getFriendsUserBeanMap(Twitter twitter, String screenName){
+	public Map<String,UserBean> getFriendsUserBeanMap(Twitter twitter, String screenName) throws IllegalStateException, TwitterException{
 		
 		Map<String,UserBean> userBeanMap = new HashMap<String,UserBean>();
 		List<User> usersList = this.getFriendsList(twitter, screenName);
