@@ -40,7 +40,6 @@ public class ManageConfigurationServlet extends HttpServlet {
 				resp.sendRedirect("/login");
 			} else {
 				Twitter twitter = (Twitter) session.getAttribute("twitter");
-				LOGGER.log(Level.INFO, "User = " + twitter.getScreenName());
 				req.setAttribute("mainUser", twitter.getScreenName());
 				Objectify ofy = ObjectifyService.ofy();
 				ParamBean config = ofy.load().type(ParamBean.class)
