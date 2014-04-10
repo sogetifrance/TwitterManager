@@ -1,6 +1,8 @@
 package org.sogeti.bo;
 
 
+import java.util.Date;
+
 import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
@@ -19,6 +21,7 @@ public class ParamBean {
 	private String criterian3;
 	private String criterian3conditions;
 	private String scoreOk;
+	private String nbJourToDelete;
 
 	public ParamBean() {
 		super();
@@ -87,4 +90,13 @@ public class ParamBean {
 	public void setScoreOk(String scoreOk) {
 		this.scoreOk = scoreOk;
 	}
+
+	public String getNbJourToDelete() {
+		return nbJourToDelete;
+	}
+
+	public void setNbJourToDelete(String nbJourToDelete) {
+		this.nbJourToDelete = nbJourToDelete;
+	}
+
 }

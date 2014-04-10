@@ -107,6 +107,12 @@
 					}" placeholder="score" /></td>
 				</tr>
 				<tr>
+					<td><label>Suprimer friends si friend depuis plus de : (en jours)</label></td>
+					<td colspan="2"><input type="text" id="nbJourToDelete" name="nbJourToDelete"
+						required value="${config.nbJourToDelete
+					}" placeholder="score" /></td>
+				</tr>
+				<tr>
 					<td colspan="2"><input type="submit" name="send"
 						class="button" style="width: 200px;" value="enregistrer" /></td>
 				</tr>

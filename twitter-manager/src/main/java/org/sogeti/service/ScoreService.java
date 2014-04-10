@@ -10,9 +10,7 @@ public class ScoreService {
 	
 	private static ParamBean param;
 	
-	public static boolean isScoreOk(String description, String screenName){
-		Objectify ofy = ObjectifyService.ofy();
-		param = ofy.load().type(ParamBean.class).id(screenName).now();
+	public static boolean isScoreOk(String description, ParamBean param){
 		long scoreOk = Integer.parseInt(param.getScoreOk());
 		if(getScore(description) >= scoreOk){
 			return true;

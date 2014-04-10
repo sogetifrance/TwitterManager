@@ -1,6 +1,7 @@
 package org.sogeti;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -81,6 +82,7 @@ public class ManageConfigurationServlet extends HttpServlet {
 		config.setCriterian3conditions(req.getParameter("criterian3conditions")
 				.toLowerCase());
 		config.setScoreOk(req.getParameter("scoreOk"));
+		config.setNbJourToDelete(req.getParameter("nbJourToDelete"));
 		ofy.save().entities(config);
 		try {
 			this.getServletContext()
