@@ -64,9 +64,6 @@
 				<tr>
 					<td colspan="2"><progress id="progressBar" value="0" max="0"></progress></td>
 					<td><label id="avancementString"></label></td>
-					<td><input type="button" name="refresh" class="button"
-						style="width: 200px;" value="envoyer"
-						onclick="refreshAvancement()" /></td>
 				</tr>
 			</table>
 		</form>
@@ -75,10 +72,7 @@
 
 <script type="text/javascript">
 	function refreshAvancement() {
-		//try to call http://localhost:8888/_ah/api/tweetSenderService/v1/isRunning	
-		// Appel de service Rest
 		var enCours = "false";
-
 		$
 				.get(
 						'tweetsender',
@@ -105,9 +99,7 @@
 	}
 
 	$(document).ready(function() {
-		setTimeout(function() {
 			refreshAvancement();
-		}, 3000);
 	});
 </script>
 </html>
