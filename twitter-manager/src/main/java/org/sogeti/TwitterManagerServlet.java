@@ -41,7 +41,9 @@ public class TwitterManagerServlet extends HttpServlet {
 				resp.sendRedirect("/login");
 			} else {
 				Twitter twitter = (Twitter)session.getAttribute("twitter");
-				this.managerService = new ManageUsersService(twitter);
+				if(this.managerService==null){
+					this.managerService = new ManageUsersService(twitter);
+				}
 				req.setAttribute("isRunning",
 						isRunnningService().contains("true") ? "true" : "false");
 				if (req.getPathInfo() != null

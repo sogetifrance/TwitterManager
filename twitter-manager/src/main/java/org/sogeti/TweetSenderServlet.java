@@ -35,10 +35,17 @@ public class TweetSenderServlet extends HttpServlet {
 				System.out.println("User indéfini redirection vers login");
 				resp.sendRedirect("/login");
 			} else {
+				
 				Twitter twitter = (Twitter)session.getAttribute("twitter");
-				tweetSenderService = new TweetSenderService(twitter);
+				if(this.tweetSenderService==null){
+					tweetSenderService = new TweetSenderService(twitter);	
+				}
+				
 				String action = req.getParameter("action");
 				if (action != null && action.equals("refresh")) {
+					
+					//AJAX rafraichissement de la progressbar pour suivre l'avancement su sender
+					LOGGER.log(Level.INFO, "rafraichissement de la progressbar pour suivre l'avancement su sender");
 					ServiceResponse response = tweetSenderService.isRunning();
 					resp.setContentType("application/json");
 					resp.setCharacterEncoding("UTF-8");

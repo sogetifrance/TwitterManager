@@ -64,7 +64,7 @@ public class TweetSenderService {
 		LOGGER.log(Level.INFO,"envoi du message à "+listIds.size()+" utilisateurs");
 		for (Long id : listIds) {
 			try {
-				LOGGER.log(Level.INFO,"envoi du message à "+id);
+				LOGGER.log(Level.INFO,"Service running? :"+this.serviceRunning + " envoi du message à "+id);
 				Thread.sleep(5000);
 				this.nbSent++;
 			} catch (InterruptedException e) {

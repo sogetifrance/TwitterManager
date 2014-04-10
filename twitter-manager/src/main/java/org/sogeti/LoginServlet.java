@@ -53,7 +53,8 @@ public class LoginServlet extends HttpServlet {
 						session.removeAttribute("tokenSecret");
 						
 						session.setAttribute("user", user);
-						resp.sendRedirect("/manageconfiguration");
+						resp.sendRedirect("/");
+						return;
 					}
 
 				
@@ -123,7 +124,8 @@ public class LoginServlet extends HttpServlet {
 					//suppression des informations concernant le requestToken
 					session.removeAttribute("token");
 					session.removeAttribute("tokenSecret");
-					resp.sendRedirect("/manageconfiguration");
+					resp.sendRedirect("/");
+					return;
 				}
 
 			} else {
