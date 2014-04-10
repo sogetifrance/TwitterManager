@@ -65,11 +65,12 @@ public class LoginServlet extends HttpServlet {
 				// pin
 				req.setAttribute("twitterReturn", true);
 			} else {
-				HttpSession session = req.getSession(false);
-				if(session ==null){
-					session = req.getSession();
+				LOGGER.log(Level.INFO, "Login requis");
+				HttpSession session = req.getSession();
+				LOGGER.log(Level.INFO, "creation nouveau requestToken");
 					Configuration conf = TwitterService.getInstance().getConf();
 					TwitterFactory tf = new TwitterFactory(conf);
+					LOGGER.log(Level.INFO, "creation nouveau twitter");
 					Twitter twitter = tf.getInstance();
 					//pour google
 					//RequestToken requestToken = twitter.getOAuthRequestToken("http://sogeti-twitter-manager.appspot.com/login/enterPin");
@@ -84,11 +85,11 @@ public class LoginServlet extends HttpServlet {
 					String authUrl = requestToken.getAuthorizationURL();
 					session.setAttribute("authUrl", authUrl);
 					session.setAttribute("twitter", twitter);
+					req.setAttribute("twitterReturn", false);
+					req.setAttribute("authUrl", session.getAttribute("authUrl"));
 				}
 				
-				req.setAttribute("twitterReturn", false);
-				req.setAttribute("authUrl", session.getAttribute("authUrl"));
-			}
+				
 			this.getServletContext()
 					.getRequestDispatcher("/WEB-INF/jsp/login.jsp")
 					.forward(req, resp);

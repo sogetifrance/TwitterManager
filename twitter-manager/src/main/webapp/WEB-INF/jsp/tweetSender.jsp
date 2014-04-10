@@ -1,6 +1,6 @@
 <%@page import="org.sogeti.bo.UserBean"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ page import="com.google.appengine.api.datastore.*"%>
 <%@ page import="java.util.List"%>
 <%@ page import="org.sogeti.bo.UserBean"%>
@@ -29,16 +29,17 @@
 						<li class="active"><a href="/tweetsender">TweetSender</a></li>
 						<li><a href="/twittermanager">TwitterManager</a></li>
 						<li><a href="/manageconfiguration">Configuration</a></li>
+						<li><a href="/logout">Logout</a></li>
 					</ul>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<div class="container">
+	<div class="container" style="margin-top:60px">
 		<p>
 			<c:out
-				value="Cette page permet d'envoyer un directMessage à tous les followers du compte paramétré en indiquant 'allUsers' ou à un user unique en renseignant son screenName" />
+				value="Cette page permet d'envoyer un directMessage Ã  tous les followers du compte paramÃ©trÃ© en indiquant 'allUsers' ou Ã  un user unique en renseignant son screenName" />
 		</p>
 		<p>${erreurMessage}</p>
 		<form name="tweetSenderForm" method="post">
@@ -57,7 +58,7 @@
 					<td><label>Message</label></td>
 					<td><textarea name="message" id="message" rows="7" cols="30"
 							maxlength="140"
-							placeholder="Veuiller indiquer un message de 140 caractères maximum"> </textarea></td>
+							placeholder="Veuiller indiquer un message de 140 caractÃ¨res maximum"> </textarea></td>
 					<td><input type="submit" name="send" class="button"
 						style="width: 200px;" value="envoyer" /></td>
 				</tr>
@@ -93,7 +94,7 @@
 							if (enCours == "true") {
 								setTimeout(refreshAvancement, 3000);
 							} else {
-								document.getElementById("avancementString").innerHTML = "Envoi de message terminé";
+								document.getElementById("avancementString").innerHTML = "Envoi de message terminÃ©";
 							}
 						});
 	}

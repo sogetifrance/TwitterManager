@@ -1,6 +1,6 @@
 <%@page import="org.sogeti.bo.UserBean"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ page import="com.google.appengine.api.datastore.*"%>
 <%@ page import="java.util.List"%>
 <%@ page import="org.sogeti.bo.UserBean"%>
@@ -28,12 +28,13 @@
 						<li><a href="/tweetsender">TweetSender</a></li>
 						<li><a href="/twittermanager">TwitterManager</a></li>
 						<li class="active"><a href="/manageconfiguration">Configuration</a></li>
+						<li><a href="/logout">Logout</a></li>
 					</ul>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="container">
+	<div class="container" style="margin-top:60px">
 		<p>
 			<c:out
 				value="Cette page permet de modifier la configuration des applications utilisant Twitter" />
@@ -42,7 +43,7 @@
 		<form name="configurationForm" method="post">
 			<table border=0>
 				<tr>
-					<td><label>Utilisateur connecté</label></td>
+					<td><label>Utilisateur connectÃ©</label></td>
 					<td colspan="2"><c:out value="${mainUser}" /></td>
 				</tr>
 				<tr>
@@ -89,8 +90,8 @@
 				</tr>
 				<tr>
 					<td><label>Liste de criteres avec condition,
-							conditions séparées par "#" , listes de mots séparées par des ";"
-							et mots sparés par ",", la fin de ligne ce termine sans rien</label></td>
+							conditions sÃ©parÃ©es par "#" , listes de mots sÃ©parÃ©es par des ";"
+							et mots sparÃ©s par ",", la fin de ligne ce termine sans rien</label></td>
 					<td colspan="2"><input type="text" id="criterian1conditions"
 						name="criterian1conditions"
 						value="${config.criterian1conditions
@@ -106,8 +107,8 @@
 				</tr>
 				<tr>
 					<td><label>Liste de criteres avec condition,
-							conditions séparées par "#" , listes de mots séparées par des ";"
-							et mots sparés par ",", la fin de ligne ce termine sans rien</label></td>
+							conditions sÃ©parÃ©es par "#" , listes de mots sÃ©parÃ©es par des ";"
+							et mots sparÃ©s par ",", la fin de ligne ce termine sans rien</label></td>
 					<td colspan="2"><input type="text" id="criterian2conditions"
 						name="criterian2conditions"
 						value="${config.criterian2conditions
@@ -123,8 +124,8 @@
 				</tr>
 				<tr>
 					<td><label>Liste de criteres avec condition,
-							conditions séparées par "#" , listes de mots séparées par des ";"
-							et mots sparés par ",", la fin de ligne ce termine sans rien</label></td>
+							conditions sÃ©parÃ©es par "#" , listes de mots sÃ©parÃ©es par des ";"
+							et mots sparÃ©s par ",", la fin de ligne ce termine sans rien</label></td>
 					<td colspan="2"><input type="text" id="criterian3conditions"
 						name="criterian3conditions"
 						value="${config.criterian3conditions
