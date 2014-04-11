@@ -45,7 +45,6 @@ public class MajManager {
 						.id(user.getId()).now();
 				if (userBdd != null) {
 					// Si oui On regarde si c'est un user delete en bdd
-					Calendar.getInstance().add(Calendar.DATE, -7);
 					if (userBdd.isDelete()) {
 						user.setDelete(true);
 					} else if (Calendar.getInstance().getTime()
