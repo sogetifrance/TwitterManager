@@ -192,6 +192,7 @@ public class ManageUsersService {
 				} catch (Exception e) {
 					e.printStackTrace();
 					LOGGER.log(Level.SEVERE,"Exception methode manageFriends" +e.getCause() + e.getMessage());
+					this.isStarted=false;
 				}
 			}
 		}

@@ -26,8 +26,6 @@ public class MajManager {
 		Objectify ofy = ObjectifyService.ofy();
 		ParamBean param = ofy.load().type(ParamBean.class)
 				.id(twitter.getScreenName()).now();
-		LOGGER.log(Level.INFO,
-				"Criteria 1 " + param.getCriterian1());
 		if (!user.getScreenName().equals(twitter.getScreenName())) {
 			if (!isNew || (isNew && !isFriend(friendIds, user.getId()))) {
 				// On regarde si le user n'est pas déjà un des follower du

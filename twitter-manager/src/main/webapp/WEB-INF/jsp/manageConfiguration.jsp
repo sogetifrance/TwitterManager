@@ -39,18 +39,15 @@
 			<c:out
 				value="Cette page permet de modifier la configuration des applications utilisant Twitter" />
 		</p>
-		<p>${messages}</p>
+		<div class="alert alert-success">${messages}</div>
 		<form name="configurationForm" method="post">
 			<table border=0>
 				<tr>
-
 					<td colspan="2"><input type="hidden" id="screenname"
 						name="screenname" placeholder="User name" value="${mainUser}" /></td>
 				</tr>
 				<tr>
-
 					<td><label>Utilisateur connecté</label></td>
-
 					<td colspan="2"><c:out value="${mainUser}" /></td>
 				</tr>
 				<tr>
