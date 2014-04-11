@@ -84,10 +84,7 @@ public class TwitterManagerServlet extends HttpServlet {
 								.forward(req, resp);
 					}
 				} else {
-					this.getServletContext()
-							.getRequestDispatcher(
-									"/WEB-INF/jsp/manageConfiguration.jsp")
-							.forward(req, resp);
+					resp.sendRedirect("/manageconfiguration");
 				}
 			}
 		} catch (ServletException e) {

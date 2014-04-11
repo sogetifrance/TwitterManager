@@ -12,11 +12,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.sogeti.bo.BeanMapper;
-import org.sogeti.bo.ParamBean;
 import org.sogeti.bo.UserBean;
 
-import com.googlecode.objectify.Objectify;
-import com.googlecode.objectify.ObjectifyService;
 
 import twitter4j.IDs;
 import twitter4j.Twitter;

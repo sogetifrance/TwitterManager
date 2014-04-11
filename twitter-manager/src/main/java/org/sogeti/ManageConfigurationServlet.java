@@ -1,7 +1,6 @@
 package org.sogeti;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,6 +14,7 @@ import org.sogeti.bo.ParamBean;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
+import twitter4j.User;
 
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
@@ -40,8 +40,9 @@ public class ManageConfigurationServlet extends HttpServlet {
 				System.out.println("User null redirection vers login");
 				resp.sendRedirect("/login");
 			} else {
+				User user = (User)session.getAttribute("user");
 				Twitter twitter = (Twitter) session.getAttribute("twitter");
-				req.setAttribute("mainUser", twitter.getScreenName());
+				req.setAttribute("mainUser", user.getScreenName());
 				Objectify ofy = ObjectifyService.ofy();
 				ParamBean config = ofy.load().type(ParamBean.class)
 						.id(twitter.getScreenName()).now();
@@ -83,11 +84,13 @@ public class ManageConfigurationServlet extends HttpServlet {
 				.toLowerCase());
 		config.setScoreOk(req.getParameter("scoreOk"));
 		config.setNbJourToDelete(req.getParameter("nbJourToDelete"));
-		ofy.save().entities(config);
+		ofy.save().entities(config).now();
+		
+		req.setAttribute("config", config);
+		req.setAttribute("mainUser", req.getParameter("screenname"));
 		try {
 			this.getServletContext()
-					.getRequestDispatcher(
-							"/WEB-INF/jsp/manageConfiguration.jsp")
+					.getRequestDispatcher("/WEB-INF/jsp/manageConfiguration.jsp")
 					.forward(req, resp);
 		} catch (ServletException e) {
 			LOGGER.log(
@@ -95,6 +98,7 @@ public class ManageConfigurationServlet extends HttpServlet {
 					"Un problème est survenu avec le traitement de la jsp '/WEB-INF/jsp/manageConfiguration.jsp'");
 			e.printStackTrace();
 		}
+		
 	}
 
 }
