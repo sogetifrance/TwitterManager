@@ -1,6 +1,7 @@
 package org.sogeti;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,7 +30,7 @@ public class TwitterManagerServlet extends HttpServlet {
 
 	static {
 		ObjectifyService.register(UserBean.class); // Fait conna�tre votre
-													// classe-entit� � Objectify
+		ObjectifyService.register(ParamBean.class); // classe-entité à Objectify
 	}
 	private ManageUsersService managerService;
 
@@ -82,13 +83,12 @@ public class TwitterManagerServlet extends HttpServlet {
 										"/WEB-INF/jsp/twitterManager.jsp")
 								.forward(req, resp);
 					}
-				}
-				else{
+				} else {
 					this.getServletContext()
-					.getRequestDispatcher(
-							"/WEB-INF/jsp/manageConfiguration.jsp")
-					.forward(req, resp);
-				}					
+							.getRequestDispatcher(
+									"/WEB-INF/jsp/manageConfiguration.jsp")
+							.forward(req, resp);
+				}
 			}
 		} catch (ServletException e) {
 			LOGGER.log(
@@ -120,25 +120,32 @@ public class TwitterManagerServlet extends HttpServlet {
 		} catch (ServletException e) {
 			LOGGER.log(
 					Level.SEVERE,
-					"Un probl�me est survenu avec le traitement de la jsp '/WEB-INF/jsp/twitterManager.jsp'");
+					"Un problème est survenu avec le traitement de la jsp '/WEB-INF/jsp/twitterManager.jsp'");
 			e.printStackTrace();
 		}
 	}
 
 	private String startService() {
-		ServiceResponse reponse = managerService.startManagement();
+		ServiceResponse reponse = new ServiceResponse("", "", new ArrayList());
+		if (managerService != null) {
+			reponse = managerService.startManagement();
+		}
 		return reponse.getServiceRunning();
 	}
 
 	private String stopService() {
-
-		ServiceResponse reponse = managerService.stopManagement();
+		ServiceResponse reponse = new ServiceResponse("", "", new ArrayList());
+		if (managerService != null) {
+			reponse = managerService.stopManagement();
+		}
 		return reponse.getServiceRunning();
 	}
 
 	private String isRunnningService() {
-		
-		ServiceResponse reponse = managerService.isRunning();
+		ServiceResponse reponse = new ServiceResponse("", "", new ArrayList());
+		if (managerService != null) {
+			reponse = managerService.isRunning();
+		}
 		return reponse.getServiceRunning();
 	}
 
