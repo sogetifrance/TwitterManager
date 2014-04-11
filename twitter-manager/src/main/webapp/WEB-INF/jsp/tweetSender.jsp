@@ -59,7 +59,7 @@
 					<td><textarea name="message" id="message" rows="7" cols="30"
 							maxlength="140"
 							placeholder="Veuiller indiquer un message de 140 caractères maximum"> </textarea></td>
-					<td><input type="submit" name="send" class="button"
+					<td><input type="submit" name="send" class="btn-large"
 						style="width: 200px;" value="envoyer" /></td>
 				</tr>
 				<tr>

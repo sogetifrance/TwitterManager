@@ -51,15 +51,15 @@
 		<form name="manageServiceForm" method="post">
 			<table border=0>
 				<tr>
-					<td><input type="button" name="start" class="button"
+					<td><input type="button" name="start" class="btn-large"
 						style="width: 200px;" value="demarrer"
 						onclick="callServlet(this.form,'start');" /></td>
 
-					<td><input type="button" name="stop" class="button"
+					<td><input type="button" name="stop" class="btn-large"
 						style="width: 200px;" value="arreter"
 						onclick="callServlet(this.form,'stop');" /></td>
 
-					<td><input type="button" name="refresh" class="button"
+					<td><input type="button" name="refresh" class="btn-large"
 						style="width: 200px;" value="refresh"
 						onclick="callServlet(this.form,'refresh');" /></td>
 

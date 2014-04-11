@@ -88,6 +88,7 @@ public class ManageConfigurationServlet extends HttpServlet {
 		
 		req.setAttribute("config", config);
 		req.setAttribute("mainUser", req.getParameter("screenname"));
+		req.setAttribute("messages","enregistrement effectué" );
 		try {
 			this.getServletContext()
 					.getRequestDispatcher("/WEB-INF/jsp/manageConfiguration.jsp")
@@ -98,7 +99,6 @@ public class ManageConfigurationServlet extends HttpServlet {
 					"Un problème est survenu avec le traitement de la jsp '/WEB-INF/jsp/manageConfiguration.jsp'");
 			e.printStackTrace();
 		}
-		
 	}
 
 }

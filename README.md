@@ -1,17 +1,19 @@
-appengine-modules-sample-java
+TwitterManager
 
+Application appEngine permettant de :
+- envoyer un même message direct à tous ses folowers
+- entretenir sa liste d'amis en fonction d'une configuration par mots clés.
+- modifier la configuration par mots clés.
 
-It has 2 web apps each deployed to a different module: guestbook and shardedcounter.
+Usage (After changing the app id in the twitter-manager-ear/src/main/application/META-INF/appengine-application.xml):
 
-Usage (After changing the app id in the appengine-modules-ear/src/main/application/META-INF/appengine-application.xml):
-
-    git clone https://github.com/GoogleCloudPlatform/appengine-modules-sample-java.git
-    cd appengine-modules-sample-java
+    git clone https://github.com/sogetifrance/TwitterManager
+    cd TwitterManager
     mvn install
-    cd appengine-modules-ear
+    cd twitter-manager-ear
     #to test it locally:
     mvn appengine:devserver
-    #or to deploy it:
+    #or to deploy it on google app engine:
     mvn appengine:update
 
 =============================

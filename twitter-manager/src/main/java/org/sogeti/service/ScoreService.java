@@ -2,17 +2,14 @@ package org.sogeti.service;
 
 import org.sogeti.bo.ParamBean;
 
-import com.googlecode.objectify.Objectify;
-import com.googlecode.objectify.ObjectifyService;
 
 
 public class ScoreService {
 	
-	private static ParamBean param;
 	
 	public static boolean isScoreOk(String description, ParamBean param){
 		long scoreOk = Integer.parseInt(param.getScoreOk());
-		if(getScore(description) >= scoreOk){
+		if(getScore(description,param) >= scoreOk){
 			return true;
 		}
 		else{
@@ -25,7 +22,7 @@ public class ScoreService {
 	 * @param userBean
 	 * @return
 	 */
-	public static long getScore(String description) {
+	public static long getScore(String description, ParamBean param) {
 		long score = 0;
 		description = description.toLowerCase();
 		//Calcul du score sur mots de niveau 1

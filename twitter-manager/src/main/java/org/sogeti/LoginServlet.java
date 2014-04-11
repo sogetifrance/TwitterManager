@@ -51,7 +51,6 @@ public class LoginServlet extends HttpServlet {
 						//suppression des informations concernant le requestToken
 						session.removeAttribute("token");
 						session.removeAttribute("tokenSecret");
-						
 						session.setAttribute("user", user);
 						resp.sendRedirect("/");
 						return;

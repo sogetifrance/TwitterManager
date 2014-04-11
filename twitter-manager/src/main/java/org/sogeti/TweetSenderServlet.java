@@ -12,7 +12,6 @@ import javax.servlet.http.HttpSession;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.sogeti.service.TweetSenderService;
-import org.sogeti.service.TwitterService;
 import org.sogeti.service.bo.ServiceResponse;
 
 import twitter4j.Twitter;
@@ -115,23 +114,19 @@ public class TweetSenderServlet extends HttpServlet {
 		try {
 			req.setAttribute("accountScreenName",
 					twitter.getScreenName());
+			this.getServletContext()
+			.getRequestDispatcher("/WEB-INF/jsp/tweetSender.jsp")
+			.forward(req, resp);
 		} catch (IllegalStateException e1) {
 			LOGGER.log(
 					Level.SEVERE,
 					"Un problème est survenu avec le traitement de la jsp '/WEB-INF/jsp/twitterManager.jsp'");
-			e1.printStackTrace();
 			e1.printStackTrace();
 		} catch (TwitterException e1) {
 			LOGGER.log(
 					Level.SEVERE,
 					"Un problème est survenu avec le traitement de la jsp '/WEB-INF/jsp/twitterManager.jsp'");
 			e1.printStackTrace();
-			e1.printStackTrace();
-		}
-		try {
-			this.getServletContext()
-					.getRequestDispatcher("/WEB-INF/jsp/tweetSender.jsp")
-					.forward(req, resp);
 		} catch (ServletException e) {
 			LOGGER.log(
 					Level.SEVERE,

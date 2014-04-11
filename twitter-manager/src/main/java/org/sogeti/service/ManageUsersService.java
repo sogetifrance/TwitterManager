@@ -43,6 +43,7 @@ public class ManageUsersService {
 		init();
 		// on nettoie la liste de friends
 		clean();
+		LOGGER.log(Level.INFO,"Demmarrage du service ManageUsersService");
 		// on boucle sur la map nettoyee
 		for (UserBean userBean : mapFriendUserBean.values()) {
 			if (friendsIdList.size() < 2000 && !stopRequired) {
@@ -67,6 +68,7 @@ public class ManageUsersService {
 	}
 
 	private void clean() throws IllegalStateException, TwitterException {
+		LOGGER.log(Level.INFO,"Entrée clean");
 		// on boucle sur tous les friends et on nettoie
 		for (UserBean friend : mapFriendUserBean.values()) {
 			friendsIdList = MajManager.maj(twitter, followersIdList, friendsIdList,
@@ -74,9 +76,8 @@ public class ManageUsersService {
 		}
 	}
 	
-	//TODO faire m�thode maj
-
 	private void findNewFriends(Long userId) {
+		LOGGER.log(Level.INFO,"Entrée findNewFriends");
 		try {
 			// recup�ration des 5000 premiers ids
 			IDs ids = null;
@@ -93,20 +94,22 @@ public class ManageUsersService {
 					// recup�ration des ids au del� des 50000 premiers
 					ids = twitter.getFollowersIDs(userId, ids.getNextCursor());
 				}
-				// � partir des ids, on recup�re de vrais users 100 par 100
+				// � partir des ids, on recupère de vrais users 100 par 100
+				
 				long[] ids5000 = ids.getIDs();
+				LOGGER.log(Level.INFO,"nb followers pour user" +userId+" : "+ids.getIDs().length);
 				int startCurs = 0;
 				ResponseList<User> newUserList100 = null;
 				while (!stopRequired && startCurs < ids5000.length && !isFriend2000) {
 					long[] tab = Arrays.copyOfRange(ids5000, startCurs,
 							startCurs + 100);
 					newUserList100 = twitter.lookupUsers(tab);
-					// on pause pour pas bouuffer la limite imposer par Twitter
+					// on pause pour pas bouffer la limite imposer par Twitter
 					Thread.sleep(newUserList100.getRateLimitStatus()
 							.getSecondsUntilReset()
 							* 1000
 							/ newUserList100.getRateLimitStatus()
-									.getRemaining());
+									.getRemaining()+1);
 					for (User user : newUserList100) {
 						// on teste si le user peut �tre ajouter ou non
 						if (friendsIdList.size() < 2000) {
@@ -128,13 +131,13 @@ public class ManageUsersService {
 
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
-			LOGGER.log(Level.SEVERE,e.getMessage());
+			LOGGER.log(Level.SEVERE,"NumberFormatException methode findNewFriends" +e.getMessage());
 		} catch (TwitterException e) {
 			// TODO Auto-generated catch block
-			LOGGER.log(Level.SEVERE,e.getMessage());
+			LOGGER.log(Level.SEVERE,"TwitterException methode findNewFriends" +e.getMessage());
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
-			LOGGER.log(Level.SEVERE,e.getMessage());
+			LOGGER.log(Level.SEVERE,"InterruptedException methode findNewFriends" +e.getMessage());
 		}
 
 	}
@@ -156,7 +159,7 @@ public class ManageUsersService {
 				thread.start();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
-				LOGGER.log(Level.SEVERE,e.getMessage());
+				LOGGER.log(Level.SEVERE,"Exception methode startManagement" +e.getMessage());
 				this.isStarted = false;
 			}
 		}
@@ -187,8 +190,8 @@ public class ManageUsersService {
 				try {
 					traitementPrincipal();
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					LOGGER.log(Level.SEVERE,e.getMessage());
+					e.printStackTrace();
+					LOGGER.log(Level.SEVERE,"Exception methode manageFriends" +e.getCause() + e.getMessage());
 				}
 			}
 		}

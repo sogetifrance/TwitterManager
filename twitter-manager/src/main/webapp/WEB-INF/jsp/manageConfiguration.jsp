@@ -39,7 +39,7 @@
 			<c:out
 				value="Cette page permet de modifier la configuration des applications utilisant Twitter" />
 		</p>
-		<p>${erreurMessage}</p>
+		<p>${messages}</p>
 		<form name="configurationForm" method="post">
 			<table border=0>
 				<tr>

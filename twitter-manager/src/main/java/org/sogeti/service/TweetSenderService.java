@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import org.sogeti.service.bo.ServiceResponse;
 
 import twitter4j.Twitter;
+import twitter4j.TwitterException;
 
 import com.google.appengine.api.ThreadManager;
 
@@ -65,10 +66,9 @@ public class TweetSenderService {
 		for (Long id : listIds) {
 			try {
 				LOGGER.log(Level.INFO,"Service running? :"+this.serviceRunning + " envoi du message à "+id);
-				Thread.sleep(5000);
+				twitter.sendDirectMessage(id, message);
 				this.nbSent++;
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
+			}  catch (TwitterException e) {
 				e.printStackTrace();
 			}
 		}
