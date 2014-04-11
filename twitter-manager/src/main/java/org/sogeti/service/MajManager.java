@@ -45,11 +45,14 @@ public class MajManager {
 						.id(user.getId()).now();
 				if (userBdd != null) {
 					// Si oui On regarde si c'est un user delete en bdd
+					Calendar cal = Calendar.getInstance();
+					cal.setTime(userBdd.getFriendSince());
+					cal.add(Calendar.DATE,
+							Integer.parseInt(param.getNbJourToDelete()));
 					if (userBdd.isDelete()) {
 						user.setDelete(true);
-					} else if (Calendar.getInstance().getTime()
-							.compareTo(userBdd.getFriendSince()) > Integer
-							.parseInt(param.getNbJourToDelete())) {
+					} else if (Calendar.getInstance().getTimeInMillis() > cal
+							.getTimeInMillis()) {
 						user.setDelete(true);
 					}
 					// On regarde si les user sont identique
